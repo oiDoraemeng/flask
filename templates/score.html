@@ -1,0 +1,46 @@
+
+{% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/register.js') }}"></script>
+{% endblock %}
+
+{% block title %}
+    分数
+{% endblock %}
+{% block body %}
+    <h1>Score Data</h1>
+    <h1>Hello {{ name }}!</h1>
+    <form id="myForm" action="http://localhost:5000/submit" onsubmit="return submitForm()" method="POST">
+        <p>输入姓名:</p>
+        <input type="text" name="name" id="nameInput" value=""/>
+        <input type="submit" value="提交"/>
+    </form>
+    <br>
+    <table border="1">
+        <tr>
+            <th>Num</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Province</th>
+            <th>Subjects</th>
+        </tr>
+        {% for record in student_data %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ record._id }}</td>
+                <td>{{ record.name }}</td>
+                <td>{{ record.age }}</td>
+                <td>{{ record.province }}</td>
+                <td>
+                    <ul>
+                        {% for subject in record.subject %}
+                            <li>{{ subject.name }}: {{ subject.score }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

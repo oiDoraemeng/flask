@@ -1,0 +1,55 @@
+<script type="text/javascript"
+        src="{{ url_for('static', filename = 'js/register.js') }}"></script>
+{% extends "base.html" %}
+
+{% block title %}主页面{% endblock %}
+{% block body %}
+    <h1 id="name">Hello {{ username }}!</h1>
+    {#<h1>日期:{{ time|dformat }}</h1>#}
+    <!--这里使用with语句将get_flashed_messages()函数的返回值赋给messages变量，该变量将包含所有闪现消息。-->
+    <!--% if messages %：检查是否有闪现消息存在。-->
+    <!--<ul class="flashes">：在HTML中创建一个无序列表，用于显示闪现消息。-->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                <!--遍历所有闪现消息 endfor结束消息遍历-->
+                {% for message in messages %}
+                    <!--对于每个消息，创建一个列表项（<li>标签）来显示消息内容。-->
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <!--结束条件判断 和with语句-->
+        {% endif %}
+    {% endwith %}
+    <input type="button" onclick="sayHello()" value="Say Hello"/>
+    {% if username %}
+        <p>您已登录,<a href="{{ url_for('logout') }}">点击这里注销</a></p>
+    {% else %}
+        <p>您暂未登录,点击这里<a href="{{ url_for('login') }}"><b>登录</b></a></p>
+    {% endif %}
+{#    <form action="http://localhost:5000/score" method="POST">#}
+{#        <p><label>分数</label><input type="submit" value="查询"/></p>#}
+{#    </form>#}
+
+    <table>
+        <tr>
+            <th>用户</th>
+        </tr>
+        {% for data in user_data %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ data.username }}</td>
+                <td>
+                    <form action="{{ url_for('delete', username=data.username) }}" method="post">
+                        <button type="submit" >Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {#<form action="/setcookie" method="POST">#}
+    {#    <label>ID</label>#}
+    {#    <input type='text' name='name'/>#}
+    {#    <input type='submit' value='提交'/>#}
+    {#</form>#}
+{% endblock %}
