@@ -47,8 +47,8 @@ def register():
                     'password': generate_password_hash(password),
                     'token': token
                     }
-            user = User(data)
-            user.save(data)
+
+            User.save(data)
             flash('用户注册成功')
             return redirect(url_for('login'))
         else:
@@ -87,7 +87,7 @@ def login():
         #         return redirect(url_for('hello', username=username))
         # else:
         #     [flash(error[0]) for error in form.errors.values()]
-                return redirect(request.referrer)
+                return redirect(url_for('qa.index'))
     else:  # 如果是 GET 请求
         return render_template( 'login.html')
 

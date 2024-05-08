@@ -30,6 +30,7 @@ Session(app)
 app.register_blueprint(auth)
 app.register_blueprint(qa)
 
+# 添加过滤器 过滤器的名字时dformat
 app.add_template_filter(datetime_format, 'dformat')
 
 

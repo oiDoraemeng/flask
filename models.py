@@ -1,36 +1,44 @@
 from exts import mongo
 
+class Base:
+    collection = None  # 基类中定义的默认集合名称
+    @staticmethod
+    def save(data):
+        # 保存数据到数据库
+        mongo.db[Base.collection].insert_one(data)
+
+    @staticmethod
+    def find_by_id(_id):
+        # 根据文ID查找数据
+        return mongo.db[Base.collection].find_one({"_id": _id})
+
+    @staticmethod
+    def find_by_condition(condition):
+        # 根据文章ID查找文章数据
+        return mongo.db[Base.collection].find_one(condition)
+
+
+
 # 创建用户类
-class User:
+class User(Base):
     """
     user_data = {
-        "username": "admin",
+        "username": "name",
         "password": "password",
         "email": "admin@example.com"
         "token": "<PASSWORD>"
+        "role": "admin/common"
     }
     """
+    collection = "user"
     def __init__(self, user_data):
         self._id = user_data.get("_id")
         self.username = user_data.get("username")
         self.password = user_data.get("password")
         self.email = user_data.get("email")
         self.user_data = user_data
-        self.collection = mongo.db.user
 
-    def save(self, user_data):
-        # 将用户数据保存到数据库
-        self.collection.insert_one(user_data)
 
-    @staticmethod
-    def find_by_id(user_id):
-        # 根据用户ID查找用户数据
-        return mongo.db.user.find_one({"_id": user_id})
-
-    @staticmethod
-    def find_by_condition(condition):
-        # 根据用户ID查找用户数据
-        return mongo.db.user.find_one(condition)
 
     @staticmethod
     def getUser(condition):
@@ -40,14 +48,14 @@ class User:
 
     def update(self, new_data):
         # 更新用户数据
-        self.collection.update_one({"_id": self.user_data["_id"]}, {"$set": new_data})
+        mongo.db.user.update_one({"_id": self.user_data["_id"]}, {"$set": new_data})
 
     def delete(self):
         # 删除用户数据
-        self.collection.delete_one({"_id": self.user_data["_id"]})
+        mongo.db.user.delete_one({"_id": self.user_data["_id"]})
 
 # 创建文章类
-class Article:
+class Article(Base):
     """
         article_data = {
         "title": "Sample Article",
@@ -57,43 +65,75 @@ class Article:
         "author_id": user._id
     }
     """
-
+    collection = "article"
     def __init__(self, article_data):
         self._id = article_data.get("_id")
         self.title = article_data.get("title")
         self.content = article_data.get("content")
         self.create_time = article_data.get("create_time")
-        self.collection = mongo.db.article
 
 
         self.author = article_data.get("author")
         self.author_id = article_data.get("author_id")
 
-    def save(self, article_data):
-        # 将文章数据保存到数据库
-        self.collection.insert_one(article_data)
-
     @staticmethod
-    def find_by_id(article_id):
-        # 根据文章ID查找文章数据
-        return mongo.db.article.find_one({"_id": article_id})
-
-    @staticmethod
-    def find_by_condition(condition):
-        # 根据文章ID查找文章数据
-        return mongo.db.article.find_one(condition)
-
-
-    @staticmethod
-    def getArticle(condition):
+    def getArticleById(_id):
         # 查询文章
-        article = Article(mongo.db.article.find_one(condition))
+        article = Article(mongo.db.article.find_one({"_id": _id}))
         return article
+
+    @staticmethod
+    def getArticles(condition):
+        # 查询文章
+        articles_data = mongo.db.article.find(condition)
+        articles_list = [Article(article) for article in articles_data]
+        return articles_list
 
     def update(self, new_data):
         # 更新文章数据
-        self.collection.update_one({"_id": self.article_data["_id"]}, {"$set": new_data})
+        mongo.db.article.update_one({"_id": self._id}, {"$set": new_data})
 
     def delete(self):
         # 删除文章数据
-        self.collection.delete_one({"_id": self.article_data["_id"]})
+        mongo.db.article.delete_one({"_id": self._id})
+
+# 创建评论类
+class Comment(Base):
+    """
+        comment_data = {
+        "content": " comment content",
+        "create_time": datetime.now(),
+
+        "author_id": user._id,
+        "article_id": article._id
+    }
+    """
+    collection = "comment"
+    def __init__(self, comment_data):
+        self._id = comment_data.get("_id")
+        self.content = comment_data.get("content")
+        self.create_time = comment_data.get("create_time")
+
+        self.author_id = comment_data.get("author_id")
+        self.article_id = comment_data.get("article_id")
+
+    @staticmethod
+    def getCommentById(_id):
+        # 查询评论
+        comment = Comment(mongo.db.comment.find_one({"_id": _id}))
+        return comment
+
+    @staticmethod
+    def getComments(condition):
+        # 查询评论
+        comments_data = mongo.db.comment.find(condition)
+        comments_list = [Comment(comment) for comment in comments_data]
+        return comments_list
+
+    def update(self, new_data):
+        # 更新评论数据
+        mongo.db.comment.update_one({"_id": self._id}, {"$set": new_data})
+
+    def delete(self):
+        # 删除评论数据
+        mongo.db.comment.delete_one({"_id": self._id})

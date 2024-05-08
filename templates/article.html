@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block head %}
+    <script src="{{ url_for('static',filename='js/article.js') }}"></script>
 
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/question.css') }}">
 {% endblock %}
 
 {% block title %}发表问答{% endblock %}
@@ -10,7 +10,7 @@
 {% block body %}
 
     <h3 class="page-title">发表问答</h3>
-    <form action="" method="post">
+    <form id="article-form" action="{{ url_for('qa.article_edit') }}" method="post">
         <div class="form-container">
             <div class="form-group">
                 <input name="title" type="text" placeholder="请输入标题" class="form-control">

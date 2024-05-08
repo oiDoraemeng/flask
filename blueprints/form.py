@@ -48,10 +48,15 @@ class changePasswordForm(wtforms.Form):
             raise ValidationError('旧密码错误')
 
 
-class QuestionForm(wtforms.Form):
+class ArticleForm(wtforms.Form):
     # 定义提问表单
     title = wtforms.StringField('Title', validators=[DataRequired(), Length(min=1, max=100, message='标题格式错误')])
     content = wtforms.TextAreaField('Content', validators=[DataRequired(), Length(min=1,  message='内容格式错误')])
+
+class CommentForm(wtforms.Form):
+    # 定义评论表单
+    content = wtforms.TextAreaField('Content', validators=[DataRequired(), Length(min=1,  message='内容格式错误')])
+    article_id = wtforms.IntegerField('Article ID', validators=[DataRequired(message='请填写用户id')])
 
 
 

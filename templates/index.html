@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+{% endblock %}
+{% block title %}
+    首页
+{% endblock %}
+
+{% block body %}
+    <div class="main">
+        <ul class="list-group">
+            {% for article in articles %}
+                <li class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between align-items-center">
+                        <div class="side-article">
+                            <img class="side-article-avatar" src="{{ url_for('static',filename="images/boy.jpg") }}"
+                                 alt="男孩">
+                        </div>
+                        <div class="article-main">
+                            <h5 class="mb-1"><a href="{{ url_for('qa.article',id=article._id) }}">{{ article.title }}</a></h5>
+                            <p class="article-content">{{ article.content | truncate(100) }}</p>
+                            <small class="d-flex justify-content-between align-items-center">
+                                <span class="article-author">{{ article.author }}</span>
+                                <span class="article-time">{{ article.create_time | dformat }}</span>
+                            </small>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

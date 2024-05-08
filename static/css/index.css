@@ -1,0 +1,49 @@
+.main{
+    border: 1px solid #e6e6e6;
+}
+
+.main .article-ul{
+}
+
+.article-ul li{
+    padding: 10px;
+    overflow: hidden;
+    border-bottom:1px solid #eee;
+}
+.side-article{
+    float: left;
+    height:100%;
+}
+.side-article-avatar{
+    width: 43px;
+    height:43px;
+    border-radius: 3px;/*圆角*/
+}
+
+.article-main{
+    float: left;
+    width: 660px;
+    margin-left:10px;
+    overflow: hidden;
+}
+
+.article-title a{
+    color: #259;
+    font-size:14px;
+    font-weight: 900;
+}
+.article-author{
+    margin-top: 5px;
+}
+
+.article-content{
+    margin-top: 5px;
+    font-size:12px;
+}
+.article-detail{
+    text-align: right;
+    margin-top: 10px;
+}
+.article-detail .article-author {
+    margin-right:10px;
+}
