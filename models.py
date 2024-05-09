@@ -1,21 +1,23 @@
+import pymongo
+
 from exts import mongo
 
 class Base:
     collection = None  # 基类中定义的默认集合名称
-    @staticmethod
-    def save(data):
+    @classmethod
+    def save(cls, data):
         # 保存数据到数据库
-        mongo.db[Base.collection].insert_one(data)
+        mongo.db[cls.collection].insert_one(data)
 
-    @staticmethod
-    def find_by_id(_id):
+    @classmethod
+    def find_by_id(cls, _id):
         # 根据文ID查找数据
-        return mongo.db[Base.collection].find_one({"_id": _id})
+        return mongo.db[cls.collection].find_one({"_id": _id})
 
-    @staticmethod
-    def find_by_condition(condition):
+    @classmethod
+    def find_by_condition(cls,condition):
         # 根据文章ID查找文章数据
-        return mongo.db[Base.collection].find_one(condition)
+        return mongo.db[cls.collection].find_one(condition)
 
 
 
@@ -37,7 +39,6 @@ class User(Base):
         self.password = user_data.get("password")
         self.email = user_data.get("email")
         self.user_data = user_data
-
 
 
     @staticmethod
@@ -76,6 +77,10 @@ class Article(Base):
         self.author = article_data.get("author")
         self.author_id = article_data.get("author_id")
 
+    @property
+    def comments(self):
+        # 获取当前文章的所有评论
+        return Comment.getCommentsForArticle({"article_id": self._id})
     @staticmethod
     def getArticleById(_id):
         # 查询文章
@@ -85,7 +90,7 @@ class Article(Base):
     @staticmethod
     def getArticles(condition):
         # 查询文章
-        articles_data = mongo.db.article.find(condition)
+        articles_data = mongo.db.article.find(condition).sort("create_time", pymongo.DESCENDING)
         articles_list = [Article(article) for article in articles_data]
         return articles_list
 
@@ -117,18 +122,24 @@ class Comment(Base):
         self.author_id = comment_data.get("author_id")
         self.article_id = comment_data.get("article_id")
 
+    @property
+    def user(self):
+        # 获取评论的作者
+        return User.getUser({"_id": self.author_id})
+
+    @staticmethod
+    def getCommentsForArticle(condition):
+        # 查询特定文章的评论
+        comments_data = mongo.db.comment.find(condition).sort("create_time", pymongo.DESCENDING)
+        comments_list = [Comment(comment) for comment in comments_data]
+        return comments_list
+
     @staticmethod
     def getCommentById(_id):
         # 查询评论
         comment = Comment(mongo.db.comment.find_one({"_id": _id}))
         return comment
 
-    @staticmethod
-    def getComments(condition):
-        # 查询评论
-        comments_data = mongo.db.comment.find(condition)
-        comments_list = [Comment(comment) for comment in comments_data]
-        return comments_list
 
     def update(self, new_data):
         # 更新评论数据

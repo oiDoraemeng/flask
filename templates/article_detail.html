@@ -14,29 +14,31 @@
             <span>时间：{{ article.create_time|dformat }}</span>
         </p>
         <hr>
-        <p class="article-content">{{ article.content }}</p>
+        {#        文本超出宽度时自动换行，并保留原格式#}
+        <pre class="article-content " style="white-space: pre-wrap;">{{ article.content }}</pre>
         <hr>
-        <h4 class="comment-group-title">评论（{{ article.answers|length }}）：</h4>
-        <form action="{{ url_for('comment') }}" method="post">
-            <input type="hidden" name="article_id" value="{{ article.id }}">
-            <div class="form-container">
-                <div class="form-group">
+        <h4 class="comment-group-title">评论（{{ article.comments|length }}）：</h4>
+        <form action="{{ url_for('qa.article_comment') }}" method="post" class="my-4">
+            <input type="hidden" name="article_id" value="{{ article._id }}">
+            <div class="form-row">
+                <div class="col">
                     <input type="text" placeholder="请填写评论" name="content" class="form-control">
                 </div>
-                <div class="form-group">
+                <div class="col-auto">
                     <button class="btn btn-primary">评论</button>
                 </div>
             </div>
         </form>
+
         <ul class="comment-group">
-            {% for answer in article.answers %}
+            {% for comment in article.comments %}
                 <li>
                     <div class="user-info">
-                        <img class="avatar" src="{{ url_for('static',filename='images/zhiliao.png') }}" alt="">
-                        <span class="username">{{ answer.author.username }}</span>
-                        <span class="create-time">{{ answer.create_time }}</span>
+                        <img class="avatar" src="{{ url_for('static',filename='images/boy.jpg') }}" alt="">
+                        <span class="username">{{ comment.user.username }}</span>
+                        <span class="create-time">{{ comment.create_time |dformat }}</span>
                     </div>
-                    <p class="comment-content">{{ answer.content }}</p>
+                    <p class="comment-content">{{ comment.content }}</p>
                 </li>
             {% endfor %}
         </ul>

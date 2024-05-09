@@ -30,8 +30,8 @@
                     <a class="nav-link" href="{{ url_for('qa.article_edit') }}">发布问答</a>
                 </li>
             </ul>
-            <form class="form-inline" action="{{ url_for('qa.index') }}">
-                <input name="q" type="text" class="form-control" placeholder="请输入关键字">
+            <form class="form-inline" action="{{ url_for('qa.search') }}">
+                <input name="keyword" type="text" class="form-control" placeholder="请输入关键字">
                 <button type="submit" class="btn btn-outline-success">查找</button>
             </form>
             <ul class="navbar-nav ml-auto">
