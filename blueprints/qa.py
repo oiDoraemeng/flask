@@ -12,7 +12,7 @@ qa = Blueprint('qa', __name__, url_prefix='/qa')
 # 首页
 @qa.route('/')
 def index():
-    articles = Article.getArticles({"author": g.user.username})
+    articles = Article.getArticles()
     return render_template('index.html', articles=articles)
 
 # 查看文章详情

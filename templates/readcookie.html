@@ -9,3 +9,27 @@
     <p>请点击<a href="/getcookie">这里查看</a></p>
 </body>
 </html>
+
+{#{% extends "base.html" %}#}
+{##}
+{#{% block head %}#}
+{#<script type="text/javascript" src="{{ url_for('static', filename = 'js/order.js') }}"></script>#}
+{#<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>#}
+{#<link rel="stylesheet" href="{{ url_for('static', filename = 'css/search.css') }}">#}
+{#{% endblock %}#}
+{##}
+{#{% block title %}订单{% endblock %}#}
+{##}
+{#{% block body %}#}
+{#    <div class="div_search">#}
+{#        <input type="text" id="orderNumber" class="form-control" placeholder="请输入用户名">#}
+{#        <button id="searchButton" class="btn btn-primary" onclick="searchOrder()">查询订单</button>#}
+{#    </div>#}
+{#    <canvas id="myChart" width="400" height="400"></canvas>#}
+{#    <canvas id="weeklyOrdersChart" width="400" height="400"></canvas>#}
+{##}
+{#    <div id="orderResult"></div>#}
+{#    <div id="orderStats"></div>#}
+{##}
+{#{% endblock %}#}

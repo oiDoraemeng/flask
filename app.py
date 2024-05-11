@@ -9,6 +9,7 @@ import config
 from exts import mail, mongo
 from blueprints.auth import auth
 from blueprints.qa import qa
+from blueprints.order import order
 from utils.filters import datetime_format
 from models import User
 
@@ -29,6 +30,7 @@ Session(app)
 # 注册蓝图
 app.register_blueprint(auth)
 app.register_blueprint(qa)
+app.register_blueprint(order)
 
 # 添加过滤器 过滤器的名字时dformat
 app.add_template_filter(datetime_format, 'dformat')
@@ -45,7 +47,6 @@ def before_request():
         setattr(g, 'user', user)
     else:
         setattr(g, 'user', None)
-
 
 @app.context_processor
 def context_processor():

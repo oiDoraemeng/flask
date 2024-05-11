@@ -88,7 +88,7 @@ class Article(Base):
         return article
 
     @staticmethod
-    def getArticles(condition):
+    def getArticles(condition=None):
         # 查询文章
         articles_data = mongo.db.article.find(condition).sort("create_time", pymongo.DESCENDING)
         articles_list = [Article(article) for article in articles_data]
